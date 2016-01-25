@@ -1,0 +1,1 @@
+Refactored the following cards: Remodel, Embargo, Great Hall, Minion and Sea Hag. The card effects have been taken out of the switch statement starting around line 800 and placed in individual functions above. The names of the new functions are as follows: card_[cardname in lowercase]()

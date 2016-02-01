@@ -426,7 +426,7 @@ int scoreFor (int player, struct gameState *state) {
       if (state->hand[player][i] == duchy) { score = score + 3; };
       if (state->hand[player][i] == province) { score = score + 6; };
       if (state->hand[player][i] == great_hall) { score = score + 1; };
-      if (state->hand[player][i] == gardens) { score = score + ( fullDeckCount(player, 0, state) / 10 ); };
+      if (state->hand[player][i] == gardens) { score += ( (state->handCount[player] + state->deckCount[player] + state->discardCount[player]) / 10 ); };
     }
 
   //score from discard
@@ -437,7 +437,7 @@ int scoreFor (int player, struct gameState *state) {
       if (state->discard[player][i] == duchy) { score = score + 3; };
       if (state->discard[player][i] == province) { score = score + 6; };
       if (state->discard[player][i] == great_hall) { score = score + 1; };
-      if (state->discard[player][i] == gardens) { score = score + ( fullDeckCount(player, 0, state) / 10 ); };
+      if (state->discard[player][i] == gardens) { score += ( (state->handCount[player] + state->deckCount[player] + state->discardCount[player]) / 10 ); };
     }
 
   //score from deck
@@ -448,7 +448,7 @@ int scoreFor (int player, struct gameState *state) {
       if (state->deck[player][i] == duchy) { score = score + 3; };
       if (state->deck[player][i] == province) { score = score + 6; };
       if (state->deck[player][i] == great_hall) { score = score + 1; };
-      if (state->deck[player][i] == gardens) { score = score + ( fullDeckCount(player, 0, state) / 10 ); };
+      if (state->deck[player][i] == gardens) { score += ( (state->handCount[player] + state->deckCount[player] + state->discardCount[player]) / 10 ); };
     }
 
   return score;
@@ -707,8 +707,7 @@ int card_great_hall(int card, int choice1, int choice2, int choice3, struct game
 			
       //discard card from hand
       discardCard(handPos, currentPlayer, state, 0);
-      return 0;
-		
+      return 0;	
 }
 
 int card_minion(int card, int choice1, int choice2, int choice3, struct gameState *state, int handPos, int *bonus)
@@ -944,7 +943,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 			
     case remodel:
-		card_remodel(card, choice1, choice2, choice3, state, handPos, bonus);
+		return card_remodel(card, choice1, choice2, choice3, state, handPos, bonus);
 	
     case smithy:
       //+3 Cards
@@ -1020,10 +1019,10 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case great_hall:
-		card_great_hall(card, choice1, choice2, choice3, state, handPos, bonus);
+		return card_great_hall(card, choice1, choice2, choice3, state, handPos, bonus);
 	
     case minion:
-		card_minion(card, choice1, choice2, choice3, state, handPos, bonus);
+		return card_minion(card, choice1, choice2, choice3, state, handPos, bonus);
 	
     case steward:
       if (choice1 == 1)
@@ -1201,7 +1200,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
 		
     case embargo: 
-		card_embargo(card, choice1, choice2, choice3, state, handPos, bonus);
+		return card_embargo(card, choice1, choice2, choice3, state, handPos, bonus);
 	
     case outpost:
       //set outpost flag
@@ -1228,7 +1227,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case sea_hag:
-		card_sea_hag(card, choice1, choice2, choice3, state, handPos, bonus);
+		return card_sea_hag(card, choice1, choice2, choice3, state, handPos, bonus);
 	
     case treasure_map:
       //search hand for another treasure_map

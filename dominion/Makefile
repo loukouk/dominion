@@ -54,16 +54,16 @@ unit4:
 	gcc -fprofile-arcs -ftest-coverage -Wall -std=c99 dominion.c unittest4.c rngs.c -o unittest4 -lm -g
 
 card1:
-	gcc -fprofile-arcs -ftest-coverage -Wall -std=c99 dominion.c cardtest1.c rngs.c -o cardtest1 -lm -g
+	gcc -fprofile-arcs -ftest-coverage -Wall -std=c99 cardtest1.c rngs.c -o cardtest1 -lm -g
 
 card2:
-	gcc -fprofile-arcs -ftest-coverage -Wall -std=c99 dominion.c cardtest2.c rngs.c -o cardtest2 -lm -g
+	gcc -fprofile-arcs -ftest-coverage -Wall -std=c99 cardtest2.c rngs.c -o cardtest2 -lm -g
 
 card3:
-	gcc -fprofile-arcs -ftest-coverage -Wall -std=c99 dominion.c cardtest3.c rngs.c -o cardtest3 -lm -g
+	gcc -fprofile-arcs -ftest-coverage -Wall -std=c99 cardtest3.c rngs.c -o cardtest3 -lm -g
 
 card4:
-	gcc -fprofile-arcs -ftest-coverage -Wall -std=c99 dominion.c cardtest4.c rngs.c -o cardtest4 -lm -g
+	gcc -fprofile-arcs -ftest-coverage -Wall -std=c99 cardtest4.c rngs.c -o cardtest4 -lm -g
 
 
 myTest:

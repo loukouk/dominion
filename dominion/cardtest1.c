@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "rngs.h"
-#include "assert.h"
-#include "dominion.c"
+#include "myassert.h"
+#include "dominion.h"
 
 int main (int argc, char** argv)
 {
@@ -15,19 +15,17 @@ int main (int argc, char** argv)
   state.deckCount[0] = 1;
   state.deck[0][0] = province;
 
-  cardEffect( great_hall, 0, 0, 0, &state, 0, NULL);
+  printf("Playing Great hall card.\n");
+  playCard( 0, 0, 0, 0, &state);
   printf("Checking hand count... ");
-  assert(state.handCount[0] == 1);
-  printf("PASSED.\n");
+  myassert(state.handCount[0] == 1);
   printf("Checking # of actions... ");
-  assert(state.numActions == 2);
-  printf("PASSED.\n");
+  myassert(state.numActions == 1);
+  printf("Next two tests should fail because the Great Hall card has purposely been changed\n");
   printf("Checking deck size... ");
-  assert(state.deckCount[0] == 0);
-  printf("PASSED.\n");
+  myassert(state.deckCount[0] == 0);
   printf("Checking hand cards... ");
-  assert(state.hand[0][0] == province);
-  printf("PASSED.\n");
+  myassert(state.hand[0][0] == province);
 
   return 0;
 }

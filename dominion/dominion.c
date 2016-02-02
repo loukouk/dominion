@@ -441,7 +441,7 @@ int scoreFor (int player, struct gameState *state) {
     }
 
   //score from deck
-  for (i = 0; i < state->discardCount[player]; i++)
+  for (i = 0; i < state->deckCount[player]; i++)
     {
       if (state->deck[player][i] == curse) { score = score - 1; };
       if (state->deck[player][i] == estate) { score = score + 1; };
@@ -526,7 +526,6 @@ int drawCard(int player, struct gameState *state)
 {	int count;
   int deckCounter;
   if (state->deckCount[player] <= 0){//Deck is empty
-    
     //Step 1 Shuffle the discard pile back into a deck
     int i;
     //Move discard to deck
@@ -668,9 +667,7 @@ int card_remodel(int card, int choice1, int choice2, int choice3, struct gameSta
 	      break;
 	    }
 	}
-
-
-      return 0;
+    return 0;
 }
 
 int card_embargo(int card, int choice1, int choice2, int choice3, struct gameState *state, int handPos, int *bonus)
@@ -723,7 +720,8 @@ int card_minion(int card, int choice1, int choice2, int choice3, struct gameStat
 			
       if (choice1)		//+2 coins
 	{
-	  state->coins = state->coins + 2;
+//	  state->coins = state->coins + 2;
+	  *bonus += 2;
 	}
 			
       else if (choice2)		//discard hand, redraw 4, other players with 5+ cards discard hand and draw 4
@@ -1034,7 +1032,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       else if (choice1 == 2)
 	{
 	  //+2 coins
-	  state->coins = state->coins + 2;
+//	  state->coins = state->coins + 2;
+	  *bonus += 2;
 	}
       else
 	{

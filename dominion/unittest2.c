@@ -7,6 +7,8 @@
 int main (int argc, char** argv) {
   struct gameState state;
 
+  printf("Testing buyCard() function\n");
+
   state.whoseTurn = 0;
   state.discardCount[0] = 0;
   state.supplyCount[estate] = 0;

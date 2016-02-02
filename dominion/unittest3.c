@@ -11,6 +11,8 @@ int main (int argc, char** argv) {
   state.deckCount[0] = 53;
   state.discardCount[0] = 109;
 
+  printf("Testing fullDeckCount() function\n");
+
   for (int i = 0; i < state.handCount[0]; i++)
 	state.hand[0][i] = minion;
   for (int i = 0; i < state.deckCount[0]; i++)

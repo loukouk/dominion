@@ -11,6 +11,7 @@ int main (int argc, char** argv) {
   state.whoseTurn = 0;
   state.handCount[0] = 1;
   state.hand[0][0] = smithy;
+  state.discardCount[0] = 0;
   state.deckCount[0] = 3;
   state.deck[0][0] = province;  
   state.deck[0][1] = province;  

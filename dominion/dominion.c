@@ -675,7 +675,8 @@ int card_embargo(int card, int choice1, int choice2, int choice3, struct gameSta
       int currentPlayer = whoseTurn(state);
 
       //+2 Coins
-      state->coins = state->coins + 2;
+//      state->coins = state->coins + 2;
+	  *bonus += 2;
 			
       //see if selected pile is in play
       if ( state->supplyCount[choice1] == -1 )
@@ -972,7 +973,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 	int card_not_discarded = 1;//Flag for discard set!
 	while(card_not_discarded){
 	  if (state->hand[currentPlayer][p] == estate){//Found an estate card!
-	    state->coins += 4;//Add 4 coins to the amount of coins
+//	    state->coins += 4;//Add 4 coins to the amount of coins
+		*bonus += 4;
 	    state->discard[currentPlayer][state->discardCount[currentPlayer]] = state->hand[currentPlayer][p];
 	    state->discardCount[currentPlayer]++;
 	    for (;p < state->handCount[currentPlayer]; p++){
@@ -1091,7 +1093,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
       for (i = 0; i <= 2; i ++){
 	if (tributeRevealedCards[i] == copper || tributeRevealedCards[i] == silver || tributeRevealedCards[i] == gold){//Treasure cards
-	  state->coins += 2;
+//	  state->coins += 2;
+  	  *bonus += 2;
 	}
 		    
 	else if (tributeRevealedCards[i] == estate || tributeRevealedCards[i] == duchy || tributeRevealedCards[i] == province || tributeRevealedCards[i] == gardens || tributeRevealedCards[i] == great_hall){//Victory Card Found
@@ -1216,7 +1219,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       if (choice1)
 	{
 	  //gain coins equal to trashed card
-	  state->coins = state->coins + getCost( handCard(choice1, state) );
+//	  state->coins = state->coins + getCost( handCard(choice1, state) );
+	  *bonus += getCost( handCard(choice1, state) );
 	  //trash card
 	  discardCard(choice1, currentPlayer, state, 1);	
 	}
@@ -1264,13 +1268,16 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
 int discardCard(int handPos, int currentPlayer, struct gameState *state, int trashFlag)
 {
-	
   //if card is not trashed, added to Played pile 
   if (trashFlag < 1)
     {
       //add card to played pile
       state->playedCards[state->playedCardCount] = state->hand[currentPlayer][handPos]; 
       state->playedCardCount++;
+
+	  //add card to discard pil
+      state->discard[currentPlayer][state->discardCount[currentPlayer]] = state->hand[currentPlayer][handPos]; 
+      state->discardCount[currentPlayer]++;
     }
 	
   //set played card to -1
@@ -1299,7 +1306,6 @@ int discardCard(int handPos, int currentPlayer, struct gameState *state, int tra
 	
   return 0;
 }
-
 int gainCard(int supplyPos, struct gameState *state, int toFlag, int player)
 {
   //Note: supplyPos is enum of choosen card

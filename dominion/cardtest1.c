@@ -14,6 +14,7 @@ int main (int argc, char** argv)
   state.hand[0][0] = great_hall;
   state.deckCount[0] = 1;
   state.deck[0][0] = province;
+  state.discardCount[0] = 0;
 
   printf("Playing Great hall card.\n");
   playCard( 0, 0, 0, 0, &state);

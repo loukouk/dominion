@@ -79,6 +79,41 @@ myTest: clean test
 	gcov dominion.c >> unittestresult.out
 	cat dominion.c.gcov >> unittestresult.out
 
+
+coverage:
+	make clean
+	make unit1
+	./unittest1
+	gcov dominion.c &> coverage.out
+	make clean
+	make unit2
+	./unittest2
+	gcov dominion.c >> coverage.out
+	make clean
+	make unit3
+	./unittest3
+	gcov dominion.c >> coverage.out
+	make clean
+	make unit4
+	./unittest4
+	gcov dominion.c >> coverage.out
+	make clean
+	make card1
+	./cardtest1
+	gcov dominion.c >> coverage.out
+	make clean
+	make card2
+	./cardtest2
+	gcov dominion.c >> coverage.out
+	make clean
+	make card3
+	./cardtest3
+	gcov dominion.c >> coverage.out
+	make clean
+	make card4
+	./cardtest4
+	gcov dominion.c >> coverage.out
+
 interface.o: interface.h interface.c
 	gcc -c interface.c -g  $(CFLAGS)
 

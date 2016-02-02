@@ -8,6 +8,8 @@ int main (int argc, char** argv) {
   struct gameState state;
   int numSame = 0;
 
+  printf("Testing shuffle() function\n");
+
   state.deckCount[0] = MAX_DECK;
   for (int i = 0; i < MAX_DECK; i++)
 	state.deck[0][i] = i;

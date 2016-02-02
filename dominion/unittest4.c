@@ -7,6 +7,8 @@
 int main (int argc, char** argv) {
   struct gameState state;
 
+  printf("Testing scoreFor() function\n");
+
   state.handCount[0] = 0;
   state.deckCount[0] = 0;
   state.discardCount[0] = 0;

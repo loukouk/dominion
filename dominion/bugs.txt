@@ -1,0 +1,26 @@
+TO MAKE AND RUN ALL TESTS:
+	> make myTest
+Results will be in the unittestresult.out
+
+
+We ran the first unit test to test the shuffle() function. We filled a 500 deck filled with unique numbers (representing a unique card) and found no bugs.
+
+For the second unit test, we tested the buyCard() function. We bought an arbitrary card and made sure that coins and buys were properly deducted. We all also checked that it was not possible to buy and item with insufficient money or buys. No bugs found.
+
+Third unit test tested the fullDeckCount() function. We found that it counted the number of cards correctly whether they were in the hand, deck, or discard pile. No bugs found.
+
+Fourth unit test tested the scoreFor() function. We added one of each type of treasure cards in the hand, deck and discard pile. We found that the test would fail after it added the gardens to the score.
+After looking at how the gardens scoring was implemented in the scoreFor() function, I found that it was coded incorrectly. Gardens are supposed to add a point to your score for every 10 cards in your deck, but instead, the scoring was calculated using the fullDeckCount() function, which counted a single type of card. This resulted in a total that was too low.
+To fix this, the scoreFor() function now adds the hand, deck, and discard count to find the total decksize and divides this by 10 using integer division (rounded down).
+During this process, another bug was found where the discardCount was being used instead of the deckCount in the third part of the scoreFor() function.
+
+The first card tested was the Great Hall card. I found that the test would fail, which was expected since the Great hall was one of the cards I had edited during assignment 1. The deckCount and the card in the hand are not what they are supposed to be since I made it add a curse card on top of the deck in addition to its other effects (i.e. +1 action and +1 card). No bugs when edit was commented out.
+
+The second card tested was the smithy card, which draws three cards. We put three provinces in the deck and smithy in the players hand, and the played the card. It drew the three cards, updating the hand and deck accordingly. No bugs found.
+
+The third card tested was the Village card, which give +2 Actions and draws a card. The card was correctly drawn from the deck with the hand and deck size adjusting accordingly. Moreover, the action count was correct after the card was played. No bugs found.
+
+The fourth card tested was the Steward. The Steward has 3 choices which were all tested one after another: +2 cards, +2 coins, or +2 trash. Drawing two cards worked without a flaw. Adding two coins did not work and the test failed.
+It turns out that in the cardEffect() function, the steward's code was directly editing the state->coins variable. If we look at the way the updateCoins() function is coded, this is not the correct way to add coins to a player. Instead, we have to add coins to the *bonus. The minion had the same problem along with Embargo, and some other cards.
+After, I check the last choice of the Steward, which is trashing 2 cards. I check the discardCount to make sure that the trashed cards were not sent in the discard pile. What I found is that the discardCard() function does not even add that card to the discard pile after it had been used. It's as if all cards were being trashed.
+To fix that, I went and edited the discardCard() function and added a line that would add the card in question to the discard pile as long as the trash flag was not set.

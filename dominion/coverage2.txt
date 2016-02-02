@@ -1,0 +1,8 @@
+TO FIND ALL INDIVIDUAL COVERAGES:
+	> make coverage
+Results will in coverage.out
+
+
+If we look at the different coverages for each test, we can see that we test at maximum approximately only 10% of the code. This makes sense since each test is only designed to test a small part, either a function or a specific card.
+We can also see that the coverage of testing a card is on average much greater than testing a single function. This is because each card makes use of a variety of different functions, ending up in greater code coverage.
+In any case, it is clear that this amount of tests is not satisfactory for testing the entire program. Even if we assume no overlapping, we still only have tested about 55% of the code (and there will be overlapping for sure). More testing must be done to approve of this program.

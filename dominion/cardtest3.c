@@ -11,6 +11,7 @@ int main (int argc, char** argv) {
   state.numActions = 1;
   state.handCount[0] = 1;
   state.hand[0][0] = village;
+  state.discardCount[0] = 0;
   state.deckCount[0] = 1;
   state.deck[0][0] = province;
 

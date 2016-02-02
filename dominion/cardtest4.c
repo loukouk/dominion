@@ -18,6 +18,7 @@ int main (int argc, char** argv) {
   state.deckCount[0] = 2;
   state.deck[0][0] = steward;
   state.deck[0][1] = steward;
+  state.discardCount[0] = 0;
 
   printf("Playing Steward card #1.\n");
   playCard(0, 1, 0, 0, &state);
@@ -56,6 +57,8 @@ int main (int argc, char** argv) {
   myassert(state.deckCount[0] == 0);
   printf("Checking coin count... ");
   myassert(state.coins == 2);
+  printf("Checking discard count... ");
+  myassert(state.discardCount[0] == 3);
 
   return 0;
 }

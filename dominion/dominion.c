@@ -238,7 +238,6 @@ int playCard(int handPos, int choice1, int choice2, int choice3, struct gameStat
     {
       return -1;
     }
-	
   //check if player has enough actions
   if ( state->numActions < 1 )
     {
@@ -247,13 +246,13 @@ int playCard(int handPos, int choice1, int choice2, int choice3, struct gameStat
 	
   //get card played
   card = handCard(handPos, state);
-	
+
   //check if selected card is an action
   if ( card < adventurer || card > treasure_map )
     {
       return -1;
     }
-	
+
   //play card
   if ( cardEffect(card, choice1, choice2, choice3, state, handPos, &coin_bonus) < 0 )
     {
@@ -1268,6 +1267,10 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
 int discardCard(int handPos, int currentPlayer, struct gameState *state, int trashFlag)
 {
+  if (handPos >= state->handCount[currentPlayer]){
+	return -1;
+}
+
   //if card is not trashed, added to Played pile 
   if (trashFlag < 1)
     {

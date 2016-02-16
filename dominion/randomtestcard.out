@@ -1,0 +1,9 @@
+Running Random Card Test for Steward...
+Test 1: draw 2 cards | Test 2: gain 2 coins | Test 3: discard 2 cards
+
+
+Tests Complete
+File 'dominion.c'
+Lines executed:26.92% of 587
+dominion.c:creating 'dominion.c.gcov'
+

@@ -1,0 +1,31 @@
+RANDOM CARD TEST
+	For my random card, I didn't want to choose something too easy so I picked the Steward. The steward has 3 different effects: drawing 2 cards, trashing 2 cards from your hand, or gaining 2 moneys.
+I didn't realize the huge potential for errors at first, so I essentially wrote the first test all at once without even trying to compile.
+This led to a lot of debugging dumb errors.
+In the end, this created a working version that tested the drawing 2 cards effect of Steward.
+With it, I found a few bugs. 
+One of them was that there was no error checking for limits built into the playCard() or cardEffect() functions. You could draw cards from an empty deck, into a hand full of 500 cards and completely break the game.
+	With that version working, I copied most of the code (since I was checking a lot of the same things) to test for the +2 coins effect of the Steward.
+This test showed a hug bug in the way the coins are updated in the whole program.
+The steward was trying to increase the coins by doing state->coins+=2 instead of using the bonus variable provided.
+This had for effect that the extra coins were ignored once the coins are updated after the card is played at the end of the playCard() function.
+	After that, I worked on the effect that discarded two cards.
+There was a big bug there yet again in the discardCard() function.
+The function never checks if the position of the card in hand is legal to discard.
+This means it would discard cards that were not in the hand and modify hand counters appropriately and fill the discard pile with garbage values. 
+Also, I found there was nothing holding me back from discarding the Steward with its own effect, which then later cause a random card to be discarded after one was moved to take its place.
+	After the core bugs were resolved both in the testing code and the dominion code, I worked on polishing some of the more obscure errors.
+There still are some problems with counting the correct amount of coins, especially when treasure cards can be drawn or discarded by the Steward effect.
+
+RANDOM ADVENTURER TEST
+	The adventurer test seemed significantly easier than testing the Steward (maybe because I now had more experienced with some of the common bugs).
+I first started by trying to simulate the card and count through the deck until I found 2 treasure cards. I recorded the position of these cards in the deck and the number of revealed cards.
+If there were no 2 treasures in the remnant of the deck, I didn't bother trying to write an oracle since there will be no way to tell how the discard pile will be shuffled back into the deck.
+The effect of randomness doesn't give us predictable results to compare with.
+Then I played the card using the playCard() function and checked that every single card was in the correct place and that every single count was updated correctly.
+This brought out one bug in particular: the hand, deck and discard limits.
+It's a good thing to have a MAX_DECK and MAX_HAND value, but the problem is that these are not the actual maxima that are possible when running the program.
+If the discard pile is 400 cards, and the deck 200 cards with no treasures in it, the game will try to handle more than 500 cards at once in either the deck or discard array.
+This, as you can imagine, can create terrible segmentation faults.
+A good solution would be to keep the array sizes the same, but to change MAX_DECK to 200 and MAX_HAND to 100 so that if everything was shoved into a single array of 500 size, it could hold it all.
+

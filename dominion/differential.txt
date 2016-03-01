@@ -1,0 +1,24 @@
+This file will describe the differences between gameResults.out (my output file) and gameResults2.out (horvatha's output file).
+
+I didn't bother running a diff command between the two files given their completely different structures.
+Running diff would give as result that everything is different, and generates no helpful information.
+
+First, if we look at Horvatha's output file, the first 1000 lines are nothing but the following string "card: 4\n". 
+I wasn't able to decipher what information this was referring to, but one thing is sure, there is no need for 1000 lines of the same thing.
+Next, the next piece of information are the kingdom cards that are used in this game.
+I've also included this information in my own output file although the formatting is defferent.
+My output file also is set to show the number of players, information which was absent in horvatha's.
+Next, in my file, the player name is written with a description his turn.
+My program loops for a while until it plays a card successfully, so a card is almost always played.
+This information is written to the output file.
+In order, It writes the card taht was played (action taken) and then the card that was bought along with other misc information. 
+In the output file we are comparing to, we see almost none of that information.
+This output seems almost solely made up from debug statements from the dominion.c file.
+There is no printing of the players' decks, hands and discard piles, which makes it impossible to see progression in the game.
+Furthmore, much of the information seems redundant, like the hand count. 
+In my output file, all the information above is included so that one can track every single card throughout the game after every single turn.
+Also, I've added indentation to make it easier to read.
+One thing that horvatha's output file shows that mine doesn't is the failures to play or buy a card. 
+I have ommitted that information from my results because I do not deem them necessary since they do not affect the game state.
+I consider a failed function call as part of the program testing the card's problem.
+Instead, if the program cannot find any playable cards (or any cards to buy during the buy phase), it will return a string indicating that information.

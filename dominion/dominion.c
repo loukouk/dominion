@@ -17,7 +17,7 @@ struct gameState* newGame() {
   struct gameState* g = malloc(sizeof(struct gameState));
   return g;
 }
-
+/*
 int* kingdomCards(int k1, int k2, int k3, int k4, int k5, int k6, int k7,
 		  int k8, int k9, int k10) {
   int* k = malloc(10 * sizeof(int));
@@ -33,7 +33,7 @@ int* kingdomCards(int k1, int k2, int k3, int k4, int k5, int k6, int k7,
   k[9] = k10;
   return k;
 }
-
+*/
 int initializeGame(int numPlayers, int kingdomCards[10], int randomSeed,
 		   struct gameState *state) {
 
@@ -272,7 +272,7 @@ int buyCard(int supplyPos, struct gameState *state) {
   int who;
   if (DEBUG){
     printf("Entering buyCard...\n");
-  }
+}
 
   // I don't know what to do about the phase thing.
 
@@ -727,9 +727,9 @@ int card_minion(int card, int choice1, int choice2, int choice3, struct gameStat
       else if (choice2)		//discard hand, redraw 4, other players with 5+ cards discard hand and draw 4
 	{
 	  //discard hand
-	  while(numHandCards(state) > 0)
+	  for (int i = numHandCards(state)-1; i >= 0; i--)
 	    {
-	      discardCard(handPos, currentPlayer, state, 0);
+	      discardCard(i, currentPlayer, state, 0);
 	    }
 				
 	  //draw 4
@@ -769,13 +769,12 @@ int card_sea_hag(int card, int choice1, int choice2, int choice3, struct gameSta
 {
       int i;
       int currentPlayer = whoseTurn(state);
-      for (i = 0; i < state->numPlayers; i--){
+      for (i = 0; i < state->numPlayers; i++){
 	if (i == currentPlayer){
 	  state->discard[i][state->discardCount[i]] = state->deck[i][state->deckCount[i]--];
           state->deckCount[i]--;
 	  state->discardCount[i]++;
 	  state->deck[i][state->deckCount[i]++] = curse;
-	  state->deck[i][state->deckCount[i]++] = ambassador;
 	}
       }
       return 0;
@@ -859,42 +858,44 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       //Backup hand
 
       //Update Coins for Buy
-      updateCoins(currentPlayer, state, 5);
-      x = 1;//Condition to loop on
-      while( x == 1) {//Buy one card
-	if (supplyCount(choice1, state) <= 0){
-	  if (DEBUG)
-	    printf("None of that card left, sorry!\n");
+	updateCoins(currentPlayer, state, 5);
+	x = 1;//Condition to loop on
+	while( x == 1) {//Buy one card
+		if (supplyCount(choice1, state) <= 0){
+			if (DEBUG)
+				printf("None of that card left, sorry!\n");
 
-	  if (DEBUG){
-	    printf("Cards Left: %d\n", supplyCount(choice1, state));
-	  }
-	}
-	else if (state->coins < getCost(choice1)){
-	  printf("That card is too expensive!\n");
+			if (DEBUG){
+				printf("Cards Left: %d\n", supplyCount(choice1, state));
+			}
+			choice1 = rand() % (treasure_map + 1);
+		}
+		else if (state->coins < getCost(choice1)){
 
-	  if (DEBUG){
-	    printf("Coins: %d < %d\n", state->coins, getCost(choice1));
-	  }
-	}
-	else{
+			if (DEBUG){
+			printf("That card is too expensive!\n");
+			printf("Coins: %d < %d\n", state->coins, getCost(choice1));
+			}
 
-	  if (DEBUG){
-	    printf("Deck Count: %d\n", state->handCount[currentPlayer] + state->deckCount[currentPlayer] + state->discardCount[currentPlayer]);
-	  }
+			choice1 = rand() % (treasure_map + 1);
+		}
+		else{
 
-	  gainCard(choice1, state, 0, currentPlayer);//Gain the card
-	  x = 0;//No more buying cards
+			if (DEBUG){
+				printf("Deck Count: %d\n", state->handCount[currentPlayer] + state->deckCount[currentPlayer] + state->discardCount[currentPlayer]);
+			}
 
-	  if (DEBUG){
-	    printf("Deck Count: %d\n", state->handCount[currentPlayer] + state->deckCount[currentPlayer] + state->discardCount[currentPlayer]);
-	  }
+			gainCard(choice1, state, 0, currentPlayer);//Gain the card
+			x = 0;//No more buying cards
 
-	}
-      }     
+			if (DEBUG){
+				printf("Deck Count: %d\n", state->handCount[currentPlayer] + state->deckCount[currentPlayer] + state->discardCount[currentPlayer]);
+			}
+		}
+	}     
 
-      //Reset Hand
-      for (i = 0; i <= state->handCount[currentPlayer]; i++){
+    //Reset Hand
+    for (i = 0; i <= state->handCount[currentPlayer]; i++){
 	state->hand[currentPlayer][i] = temphand[i];
 	temphand[i] = -1;
       }

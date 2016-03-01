@@ -22,3 +22,5 @@ One thing that horvatha's output file shows that mine doesn't is the failures to
 I have ommitted that information from my results because I do not deem them necessary since they do not affect the game state.
 I consider a failed function call as part of the program testing the card's problem.
 Instead, if the program cannot find any playable cards (or any cards to buy during the buy phase), it will return a string indicating that information.
+Finally, at the end of a game, my output file has a list of the people who won and lost.
+This also includes which cards they won with, and their hand, deck and discard pile is printed one last time.

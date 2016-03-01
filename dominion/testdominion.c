@@ -149,8 +149,8 @@ int playGame ()
 		}
 	}
 
+	printf("\n\t--- RESULTS ---\n");
 	getWinners( winners, state);
-
 	for (int i = 0; i < state->numPlayers; i++) {
 		if (winners[i])
 			printf("\tPlayer %d wins with %d estates, %d duchys, %d provinces and %d gardens\n",i,fullDeckCount(i, estate, state),fullDeckCount(i, duchy, state),fullDeckCount(i, province, state),fullDeckCount(i, gardens, state));

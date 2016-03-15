@@ -1,0 +1,87 @@
+Inspection Lead:	morriluk
+Other Team members:	jiajun, alarifim
+Code Author:		alarifim
+
+INTRODUCTION
+
+Junshi (jiajun), Mohan(alarifim) and I decided to get together as a team to inspect each other's code.
+First, I lead an inspection on Mohan's dominion.c code.
+After debating what kind of testing to use, we decided to go with random testing.
+
+
+TESTING AND IDENTIFYING BUGS
+
+We ran all of our random testers on Mohan's dominion.c code and came up with a large amount of failures.
+Some of the ones that stood out where failures that I already knew about.
+For example, Mohan had the bug where his coin total was incorrectly calculated when a card was supposed to affect the coin total.
+I could see this after running my own Steward random tester on his code because all the checks for coins failed.
+I thought this would be the bug that results in not using the bonus variable inside the cardEffect() function, which leads to all coins added by card effects to be ignored.
+
+Another bug was in the calculation of the score at the end of the game.
+The score was usually off by some amount, which I thought was because of the gardens bug.
+There is a bug where not all cards in the deck, hand and discard are not counted correctly in the scoreFor() function.
+
+There were a few failures that we had a hard time understanding why they occurred.
+Some of these include the discard pile not being correct for the first 20 cards or so, but then being correct for the rest of the way.
+These bugs were not present in all three random testers though, so we assumed they were bugs with our individual random testers and not the code itself.
+In any case, we don't have enough information to correctly identify these bugs, so we left them alone.
+
+Instead, we decided to focus on Mohan's adventurer card because it seemed to be the cause of many problems.
+We found a bug were the adventurer didn't seem to be drawing teasure cards.
+My tester told me that the cards drawn were not, and actually almost never, treasure cards.
+This could be because Mohan has a while loop looking for the wrong cards in his random tester.
+
+Furthermore, all three of our random adventurer testers reported that after playing the adventurer card, the player had too many cards in hand.
+We thought that maybe the Adventurer's effect maybe kept all cards in hand after it drew them, instead of only keeping the two treasure cards.
+Someone brought up that this problem is probably related to the fact that the adventurer rarely draws two treasures.
+
+Finally, a last bug that was found in Mohan's adventurer code was that everything would completely fail about 35% of the time. 
+The testers described the state of the hand, deck and discard to be almost identical before and after playing the card.
+For some reason, it seems like maybe the card's effect was being canceled or ignored.
+This bug baffled us the most so we decided to make it a priority when we started looking into the adventurer code to fix these bugs.
+
+
+ATTEMPTING TO FIX BUGS
+
+The first bugs we ended up fixing were the first ones found.
+As I had thought, the bug caused by the coins not being updated correctly was due to not using the bonus variable as intended.
+All we had to do to fix this bug in Mohan's dominion.c was to replace statements such as:
+		state->coins += 2;
+with an equivalent statement that used the bonus variable instead:
+		*bonus += 2;	//remember that the address of bonus is passed into the function
+We also made sure that *bonus was correctly initialized to zero at the beginning of the cardEffect() function.
+
+The second bug was in the calculation of the score.
+I was sure that the bug was because of the gardens not counting all card in the deck, and discard pile correctly, but Mohan told me he had fixed that bug.
+We looked in the scoreFor() function anyway and he was right. That wasn't it.
+We ended up re-running some of the testers to try to get more information about this particular bug.
+In the end, we found it was caused by the third for loop in scoreFor().
+When counting the cards in the deck, it was using the discardCount instead of the deckCount.
+All we had to do to fix the bug was to change discardCount to deckCount.
+
+Lastly, we focused on solving the bugs in the adventurer card.
+First we were looking at why the test was failing about 35% of the time.
+I was focusing mostly on the dominion.c file, which was the wrong way to go about it.
+Someone suggested that it was because our random tests were using empty decks during 1/3 of the runs to create greater coverage.
+We changed it from 1/3 to 1 all the time, and 100% of the test cases failed.
+Unfortunately, we weren't able to figure out why the test was failing even though we knew it was because the deck was initialized to empty.
+It seemed to shuffle the deck correctly after mixing the discard pile back into the deck.
+
+Eventually, we decided to look at some other bugs in the adventurer.
+We pulled up the code and I immediately noticed that instead of having a while loop counting through the deck to find treasure cards, there was simply an if statement.
+This makes it so that in a sense, the adventurer just drew two cards instead of looping and looking for treasures in the deck.
+
+Although the issue of why treasure cards weren't drawn is fixed, the handCount was still wrong after using the adventurer card.
+By using my tester and looking at exactly what was in the hand at the time of failure, we saw that the adventurer card was still present in the hand.
+This means that the card itself was not being discarded properly.
+We looked through the code and found out that indeed, there was no point in time where that card was being discarded.
+This was a major issue, and although it's easily fixable for this adventurer card, we noticed that other cards had the same issue.
+
+
+CONCLUSION
+Overall, the inspection was pretty informal, which is to be expected between friends.
+It was a bit difficult to organize everything online, and we definitely saw the challenges from trying to organize everything over the net.
+We ended up meeting once just to get everything finished without any confusion.
+The dominion.c file seems in better shape after we resolved all the bugs mentioned, but it is far from clean.
+Just the fact that we found out near the end of our analysis that some cards didn't even discard themselves made us understand how unreliable the software still is.
+If it was to be released to the public, there definitely would need a large amount of work before it can come close to being in acceptable condition.

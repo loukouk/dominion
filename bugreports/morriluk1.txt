@@ -1,0 +1,19 @@
+Lead Inspection:	morriluk
+Code Author:		kulpd
+
+Bug Name:	Unchanging coins total from played cards
+Bug ID:		0001
+Severity:	High
+
+BUG DESCRIPTION
+Whenever a card is played which should affect the coin total, no changes to the coin total is made.
+For example, say I play the minion card and choose the +2 coins effect, nothing happens.
+After playing the card, the coin total is equal to the value of the cards that are in hand.
+This effect is not restricted to the minion card only, but all cards affecting coin total.
+
+POSSIBLE FIX
+If we look into the playCard() function, we can see that updateCoins() is called following cardEffect().
+In the updateCoins() function, the coins are reset to zero and then counted based on the cards in hand.
+Furthermore, the bonus is added to this total.
+This bonus represents the extra coins added from cards earlier in the turn.
+If this variable was not to be updated correctly in cardEffect(), then we would see errors in calculating the total coins because the effects from played cards would be ignored.

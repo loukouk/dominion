@@ -1,0 +1,17 @@
+Lead Inspection:	morriluk
+Code Author:		kulpd
+
+Bug Name:	Low scoring when player has gardens
+Bug ID:		0002
+Severity:	High
+
+BUG DESCRIPTION
+At the end of the game, after either all provinces are depleted or if three other supply piles have been depleted, the score seems to sometimes be incorrectly calculated.
+The score is sometimes a lower value of what it is supposed to be.
+This results in players losing when they should be at the top of the standings.
+Also, this error seems to occur only when the target player has garden(s) in his deck.
+
+POSSIBLE FIX
+The error should be in the scoreFor() function since the score is the element that is incorrectly calculated.
+Since it only happens with garden cards, we can assume they are the ones being incorrectly calculated.
+Errors could include improper rounding or incorrect counting of all cards in the hand, deck and discard.

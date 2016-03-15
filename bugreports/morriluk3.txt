@@ -1,0 +1,20 @@
+Lead Inspection:	morriluk
+Code Author:		kulpd
+
+Bug Name:	Card discarding itself too early
+Bug ID:		0003
+Severity:	Medium
+
+BUG DESCRIPTION
+By running my Steward unit test, there was a bug that always came up when choice1 = 3, and choice2 or choice3 was equal to the position of the Steward card in the player's hand.
+Essentially, after inspecting the source code in cardEffect(), I noticed that the card was discarding itself.
+This bug then propagated because another card in the hand would come fill that hole, and then be discarded as well by the regular discardCard() call in playCard().
+Since Steward was already discard, it would discard something random and unexpected, resulting in errors.
+
+POSSIBLE FIX
+There are probably two main ways to fix this problem.
+In both ways, there would need to be a check in the Steward card effect to see if it is discarding itself.
+If it is, the first fix would be to either skip that discardCard() function call, or simply to make the whole cardEffect() function fail because of invalid arguments.
+Another way would be to make a small loop that would ask the player for a valid card in hand to discard.
+This way, a small mistake would not crash the program or put the player at a disadvantage in the game.
+Note: There might be issues if the player has less than 3 cards in hand.

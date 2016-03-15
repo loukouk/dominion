@@ -1,0 +1,51 @@
+Lead Inspection:	morriluk
+Code Author:		morriluk
+
+Bug name: Feast Card Infinite Loop
+Severity: High
+
+
+BUG DESCRIPTION
+My random tester would get stuck in an infinite loop after running just one game.
+I knew the loop was occurring in dominion.c and not in my random tester because all my loops had print statements in them at the time.
+
+DEBUGGING
+By putting printf() statements before playing a card that would indicate which card would be played, I found out that this bug was caused by the Feast card.
+For good measure, I also put one after the card was played to make sure that the problem was really occurring in dominion.c and not my random tester.
+Somewhere in the card, there is an infinite loop.
+To identify exactly where is bug was happening, I looked at the source code for the Feast card.
+There was only one loop in the Feast card, so finding where the loop in question wasn't very hard.
+Next, I analyzed the looping condition.
+This loop simply contained a variable x, which was initialized to 1.
+The loop would stop when x is set to 0.
+Looking at the contents of the loop though, it was clear that there was a possibility of x not getting set to 0.
+The contents of the loop looked like the following after removing all debug print statements:
+
+	x = 1;//Condition to loop on
+	while( x == 1) {//Buy one card
+		if (supplyCount(choice1, state) <= 0){
+		}
+		else if (state->coins < getCost(choice1)){
+		}
+		else{
+
+			gainCard(choice1, state, 0, currentPlayer);//Gain the card
+			x = 0;//No more buying cards
+			}
+		}
+	} 
+
+It is clear that if the first or second case in the if statement happens to trigger, then the loop will be stuck forever since nothing changes to change the state of choice1, state, or x.
+
+
+SOLUTION
+Since there is a loop there, we can assume that the programmer put it there for some reason.
+The most probable reason that a while loop would be used would be for trial and error.
+We can therefore assume that the programmer intended to add a randomizer that would change the value of choice1 to something else at every iteration of the loop until it exits.
+Therefore we can modify the code by adding the following in the 2 empty if statements:
+
+		choice1 = rand() % (treasure_map + 1);
+
+This will change choice1 at every iteration until a card is found that will have the correct amount of supply and enough money to buy.
+Another option is just to make cardEffect() fail and return -1, or we could even simply ignore gaining a card since it was the player's fault for entering wrong input.
+I decided to go with the above solution because these other solutions don't make use of the while loop that was there for a reason.
